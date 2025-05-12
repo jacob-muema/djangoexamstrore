@@ -1,0 +1,542 @@
+<div class="upload-container">
+    <div class="upload-card">
+      <div class="card-decoration">
+        <div class="decoration-circle"></div>
+        <div class="decoration-circle"></div>
+        <div class="decoration-circle"></div>
+      </div>
+      
+      <h2 class="upload-title">Upload File</h2>
+      
+      <form method="POST" enctype="multipart/form-data" class="upload-form">
+        {% csrf_token %}
+        <div class="form-fields">
+          {{ form.as_p }}
+        </div>
+        
+        <button type="submit" class="upload-button">
+          <span class="button-text">Upload File</span>
+          <span class="button-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+          </span>
+        </button>
+      </form>
+      
+      <a href="{% url 'file_list' %}" class="view-files-link">
+        <span class="link-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><polyline points="13 2 13 9 20 9"></polyline></svg>
+        </span>
+        <span>View Uploaded Files</span>
+        <span class="arrow-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+        </span>
+      </a>
+
+      <a href="{% url 'logout' %}" class="logout-link">Logout</a>
+    </div>
+  </div>
+  
+  <style>
+    :root {
+      --primary: #6366f1;
+      --primary-hover: #4f46e5;
+      --primary-light: rgba(99, 102, 241, 0.1);
+      --primary-lighter: rgba(99, 102, 241, 0.05);
+      --text-primary: #1f2937;
+      --text-secondary: #6b7280;
+      --text-tertiary: #9ca3af;
+      --bg-primary: #ffffff;
+      --bg-secondary: #f9fafb;
+      --border: #e5e7eb;
+      --shadow: 0 10px 40px rgba(0, 0, 0, 0.06);
+      --radius: 16px;
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+  
+    body {
+      background-color: #f5f7fa;
+      color: var(--text-primary);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      line-height: 1.5;
+      margin: 0;
+      padding: 0;
+    }
+  
+    .upload-container {
+      max-width: 600px;
+      margin: 60px auto;
+      padding: 20px;
+      perspective: 1000px;
+    }
+  
+    .upload-card {
+      background: var(--bg-primary);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 40px;
+      position: relative;
+      overflow: hidden;
+      transform-style: preserve-3d;
+      animation: cardEntrance 0.8s ease-out forwards;
+    }
+  
+    @keyframes cardEntrance {
+      0% {
+        opacity: 0;
+        transform: translateY(40px) rotateX(10deg);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0) rotateX(0);
+      }
+    }
+  
+    .card-decoration {
+      position: absolute;
+      top: 0;
+      right: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+  
+    .decoration-circle {
+      position: absolute;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary-light), var(--primary-lighter));
+    }
+  
+    .decoration-circle:nth-child(1) {
+      width: 150px;
+      height: 150px;
+      top: -75px;
+      right: -75px;
+      opacity: 0.7;
+      animation: float 8s ease-in-out infinite;
+    }
+  
+    .decoration-circle:nth-child(2) {
+      width: 100px;
+      height: 100px;
+      top: 20px;
+      right: -30px;
+      opacity: 0.5;
+      animation: float 12s ease-in-out infinite reverse;
+    }
+  
+    .decoration-circle:nth-child(3) {
+      width: 50px;
+      height: 50px;
+      top: 80px;
+      right: 40px;
+      opacity: 0.3;
+      animation: float 10s ease-in-out infinite 1s;
+    }
+  
+    @keyframes float {
+      0%, 100% {
+        transform: translateY(0) rotate(0);
+      }
+      50% {
+        transform: translateY(-20px) rotate(5deg);
+      }
+    }
+  
+    .upload-title {
+      margin: 0 0 32px 0;
+      color: var(--text-primary);
+      font-size: 28px;
+      font-weight: 700;
+      text-align: center;
+      letter-spacing: -0.5px;
+      position: relative;
+      z-index: 1;
+    }
+  
+    .upload-title::after {
+      content: '';
+      position: absolute;
+      bottom: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60px;
+      height: 4px;
+      background: var(--primary);
+      border-radius: 2px;
+      animation: expandWidth 0.8s ease-out forwards 0.3s;
+      transform-origin: center;
+      opacity: 0;
+    }
+  
+    @keyframes expandWidth {
+      0% {
+        width: 0;
+        opacity: 0;
+      }
+      100% {
+        width: 60px;
+        opacity: 1;
+      }
+    }
+  
+    .upload-form {
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+      position: relative;
+      z-index: 1;
+    }
+  
+    .form-fields {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+  
+    /* Style for all form paragraphs */
+    .form-fields p {
+      margin: 0;
+      position: relative;
+      animation: fadeSlideUp 0.5s ease-out forwards;
+      opacity: 0;
+    }
+  
+    /* Staggered animation for form fields */
+    .form-fields p:nth-child(1) { animation-delay: 0.1s; }
+    .form-fields p:nth-child(2) { animation-delay: 0.2s; }
+    .form-fields p:nth-child(3) { animation-delay: 0.3s; }
+  
+    @keyframes fadeSlideUp {
+      0% {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  
+    /* Style for all form labels */
+    .form-fields label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      font-size: 15px;
+      transition: var(--transition);
+    }
+  
+    /* Style for text inputs */
+    .form-fields input[type="text"],
+    .form-fields input[type="email"],
+    .form-fields input[type="number"],
+    .form-fields input[type="password"],
+    .form-fields input[type="tel"],
+    .form-fields input[type="url"] {
+      width: 100%;
+      padding: 12px 16px;
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      font-size: 16px;
+      transition: var(--transition);
+      box-sizing: border-box;
+    }
+  
+    /* Style for textareas */
+    .form-fields textarea {
+      width: 100%;
+      padding: 12px 16px;
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      font-size: 16px;
+      transition: var(--transition);
+      min-height: 120px;
+      resize: vertical;
+      box-sizing: border-box;
+    }
+  
+    /* Style for select dropdowns */
+    .form-fields select {
+      width: 100%;
+      padding: 12px 16px;
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      font-size: 16px;
+      transition: var(--transition);
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      background-size: 16px;
+      padding-right: 40px;
+      box-sizing: border-box;
+    }
+  
+    /* Style for checkboxes and radio buttons */
+    .form-fields input[type="checkbox"],
+    .form-fields input[type="radio"] {
+      margin-right: 8px;
+      width: 18px;
+      height: 18px;
+      accent-color: var(--primary);
+    }
+  
+    /* Focus states for all inputs */
+    .form-fields input:focus,
+    .form-fields textarea:focus,
+    .form-fields select:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px var(--primary-light);
+    }
+  
+    /* Hover states for all inputs */
+    .form-fields input:hover:not(:focus),
+    .form-fields textarea:hover:not(:focus),
+    .form-fields select:hover:not(:focus) {
+      border-color: var(--text-tertiary);
+    }
+  
+    /* Style for file inputs */
+    .form-fields input[type="file"] {
+      width: 100%;
+      padding: 50px 20px;
+      border: 2px dashed var(--border);
+      border-radius: 12px;
+      background-color: var(--bg-secondary);
+      transition: var(--transition);
+      cursor: pointer;
+      text-align: center;
+      position: relative;
+    }
+  
+    .form-fields input[type="file"]::before {
+      content: "Drag files here or click to browse";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-weight: 500;
+      color: var(--text-secondary);
+      pointer-events: none;
+    }
+  
+    .form-fields input[type="file"]::after {
+      content: "Supported formats: PDF, JPG, PNG, DOC";
+      position: absolute;
+      top: calc(50% + 25px);
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 14px;
+      color: var(--text-tertiary);
+      pointer-events: none;
+    }
+  
+    .form-fields input[type="file"]:hover,
+    .form-fields input[type="file"]:focus {
+      border-color: var(--primary);
+      background-color: var(--primary-lighter);
+    }
+  
+    /* Style for help text */
+    .form-fields .helptext {
+      display: block;
+      margin-top: 6px;
+      font-size: 14px;
+      color: var(--text-tertiary);
+    }
+  
+    /* Style for error messages */
+    .form-fields .errorlist {
+      list-style: none;
+      padding: 0;
+      margin: 6px 0 0 0;
+      color: #ef4444;
+      font-size: 14px;
+      animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+    }
+  
+    @keyframes shake {
+      10%, 90% { transform: translate3d(-1px, 0, 0); }
+      20%, 80% { transform: translate3d(2px, 0, 0); }
+      30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+      40%, 60% { transform: translate3d(4px, 0, 0); }
+    }
+  
+    .upload-button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      padding: 16px 24px;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
+    }
+  
+    .upload-button::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: var(--transition);
+      z-index: -1;
+    }
+  
+    .upload-button:hover {
+      background: var(--primary-hover);
+      transform: translateY(-3px);
+      box-shadow: 0 10px 25px rgba(99, 102, 241, 0.3);
+    }
+  
+    .upload-button:hover::before {
+      animation: shimmer 1.5s infinite;
+    }
+  
+    @keyframes shimmer {
+      0% {
+        left: -100%;
+      }
+      100% {
+        left: 100%;
+      }
+    }
+  
+    .button-text {
+      position: relative;
+      z-index: 2;
+    }
+  
+    .button-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      z-index: 2;
+      transition: var(--transition);
+    }
+  
+    .button-icon svg {
+      width: 18px;
+      height: 18px;
+    }
+  
+    .upload-button:hover .button-icon {
+      transform: translateY(-5px);
+    }
+  
+    .view-files-link {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 24px;
+      padding: 12px;
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 500;
+      border-radius: 8px;
+      transition: var(--transition);
+      position: relative;
+      z-index: 1;
+    }
+  
+    .view-files-link:hover {
+      background: var(--primary-lighter);
+      color: var(--primary-hover);
+    }
+  
+    .link-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition);
+    }
+  
+    .link-icon svg {
+      width: 16px;
+      height: 16px;
+    }
+  
+    .arrow-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition);
+      opacity: 0;
+      width: 0;
+      overflow: hidden;
+    }
+  
+    .arrow-icon svg {
+      width: 16px;
+      height: 16px;
+    }
+  
+    .view-files-link:hover .arrow-icon {
+      opacity: 1;
+      width: 16px;
+      margin-left: 4px;
+    }
+  
+    .view-files-link:hover .link-icon {
+      transform: scale(1.1);
+    }
+
+    .logout-link {
+      display: block;
+      margin-top: 20px;
+      text-align: center;
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 500;
+      transition: var(--transition);
+    }
+
+    .logout-link:hover {
+      color: var(--primary-hover);
+    }
+  
+    /* Responsive adjustments */
+    @media (max-width: 640px) {
+      .upload-container {
+        margin: 20px auto;
+        padding: 16px;
+      }
+      
+      .upload-card {
+        padding: 30px 20px;
+      }
+      
+      .upload-title {
+        font-size: 24px;
+      }
+      
+      .form-fields input[type="file"] {
+        padding: 40px 16px;
+      }
+      
+      .form-fields input[type="file"]::after {
+        top: calc(50% + 20px);
+      }
+    }
+  </style>
