@@ -79,9 +79,9 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'railway',
         'USER': 'postgres',
-        'PASSWORD': 'GzCkMixulXwWnIPYlkex',
-        'HOST': 'containers-us-west-92.railway.app',
-        'PORT': '5526',
+        'PASSWORD': 'PmSKCaHyEKktnlTFqUOHEJHRDOxYLMiE',
+        'HOST': 'postgres.railway.internal',
+        'PORT': '5432',
     }
 }
 
@@ -122,6 +122,13 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+# Add the directory for static files
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+
+# Define the directory where static files will be collected
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles_build', 'static')
+
+# Media files (for user-uploaded content)
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
